@@ -1,4 +1,4 @@
 # VGG-Attention
 This code adds attention to VGG.
 
-重写了vgg16并可以使用vgg预训练后的模型
+重写了vgg16实现了把attention技术加入了vgg16上面且vgg16是预训练过的
