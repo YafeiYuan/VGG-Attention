@@ -3,8 +3,7 @@ import torch.nn as nn
 
 class SelfAttention(nn.Module):
     """ Self attention Layer"""
-
-    # def __init__(self,in_dim,activation):
+    
     def __init__(self, in_dim):
         super(SelfAttention, self).__init__()
         self.chanel_in = in_dim
@@ -15,7 +14,7 @@ class SelfAttention(nn.Module):
         self.value_conv = nn.Conv2d(in_channels=in_dim, out_channels=in_dim, kernel_size=1)
         self.gamma = nn.Parameter(torch.zeros(1))
 
-        self.softmax = nn.Softmax(dim=-1)  #
+        self.softmax = nn.Softmax(dim=-1)
 
     def forward(self, x):
         """
@@ -49,7 +48,6 @@ vgg16 = torchvision.models.vgg16(pretrained=True).cuda()
 class VGG16(nn.Module):
     def __init__(self):
         super(VGG16, self).__init__()
-        # self.nums = nums
         vgg = []
 
         # 第一个卷积部分
