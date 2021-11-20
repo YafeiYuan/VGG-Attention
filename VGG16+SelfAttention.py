@@ -1,5 +1,5 @@
 import torch.nn as nn
-
+import torch
 
 class SelfAttention(nn.Module):
     """ Self attention Layer"""
@@ -37,20 +37,17 @@ class SelfAttention(nn.Module):
         out = self.gamma * out + x
         # return out,attention
         return out
+    
 
-
-import torch
-import torch.nn as nn
-
-vgg16 = torchvision.models.vgg16(pretrained=True).cuda()
-
+# 加载vgg16预训练后模型
+vgg16 = torchvision.models.vgg16(pretrained=True)
 
 class VGG16(nn.Module):
     def __init__(self):
         super(VGG16, self).__init__()
         vgg = []
 
-        # 第一个卷积部分
+        # 第一个卷积部分 加载vgg16模型中的第一个block
         # 112, 112, 64
         vgg.append(vgg16.features[0])
         vgg.append(vgg16.features[1])
@@ -58,7 +55,7 @@ class VGG16(nn.Module):
         vgg.append(vgg16.features[3])
         vgg.append(vgg16.features[4])
 
-        # 第二个卷积部
+        # 第二个卷积部 加载vgg16模型中的第二个block
         # 56, 56, 128
         vgg.append(vgg16.features[5])
         vgg.append(vgg16.features[6])
@@ -66,7 +63,7 @@ class VGG16(nn.Module):
         vgg.append(vgg16.features[8])
         vgg.append(vgg16.features[9])
 
-        # 第三个卷积部
+        # 第三个卷积部 加载vgg16模型中的第三个block
         # 28, 28, 256
         vgg.append(vgg16.features[10])
         vgg.append(vgg16.features[11])
@@ -76,7 +73,7 @@ class VGG16(nn.Module):
         vgg.append(vgg16.features[15])
         vgg.append(vgg16.features[16])
 
-        # 第四个卷积部
+        # 第四个卷积部 加载vgg16模型中的第四个block
         # 14, 14, 512
         vgg.append(vgg16.features[17])
         vgg.append(vgg16.features[18])
@@ -86,25 +83,25 @@ class VGG16(nn.Module):
         vgg.append(vgg16.features[22])
         vgg.append(vgg16.features[23])
 
-        # 第五个卷积部
+        # 第五个卷积部 加载vgg16模型中的第五个block
         # 7, 7, 512
         vgg.append(vgg16.features[24])
         vgg.append(vgg16.features[25])
-        vgg.append(SelfAttention(512))  ## 加入selfattention
+        vgg.append(SelfAttention(512))  # 加入selfattention
         vgg.append(vgg16.features[26])
         vgg.append(vgg16.features[27])
-        vgg.append(SelfAttention(512))  ##
+        vgg.append(SelfAttention(512))  # 加入selfattention
         vgg.append(vgg16.features[28])
         vgg.append(vgg16.features[29])
         vgg.append(vgg16.features[30])
-        vgg.append(SelfAttention(512))  ##
+        vgg.append(SelfAttention(512))  # 加入selfattention
 
         # 将每一个模块按照他们的顺序送入到nn.Sequential中,输入要么事orderdict,要么事一系列的模型，遇到上述的list，必须用*号进行转化
         self.main = nn.Sequential(*vgg)
 
         self.avgpool = vgg16.avgpool
 
-        # 全连接层
+        # 全连接层 加入vgg16模型中的全连接层
         classfication = []
         # in_features四维张量变成二维[batch_size,channels,width,height]变成[batch_size,channels*width*height]
         classfication.append(vgg16.classifier[0])
